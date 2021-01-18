@@ -1,0 +1,17 @@
+mysql_password=$(kubectl get secret --namespace mysql mysql-release -o jsonpath="{.data.mysql-root-password}" | base64 --decode)
+echo $mysql_password
+kubectl run mysql-release-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mysql:8.0.22-debian-10-r68 --namespace mysql --command --bash
+
+mysql -h mysql-release.mysql.svc.cluster.local -uroot -p my_database
+
+create database kasten_k10_demo;
+use kasten_k10_demo;
+CREATE TABLE Emp (
+    EmployeeID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+
+INSERT INTO Employee (EmployeeID, LastName, FirstName, Address, City) VALUES (1,'xyz','abc','kalyani_nagar','pune');
